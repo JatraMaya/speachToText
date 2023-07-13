@@ -8,12 +8,30 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var speechRecognizer = SpeechRecognizer()
+    @State private var isRecording: Bool = false
+
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+            Text("Text to speech")
+
+            Button {
+                if !isRecording{
+                    speechRecognizer.transcribe()
+                }else {
+                    speechRecognizer.stopTranscribing()
+                }
+
+                isRecording.toggle()
+
+            }label: {
+                Image(systemName: isRecording ? "mic.circle" : "mic.slash.circle")
+                    .resizable()
+                    .frame(width: 100, height: 100)
+            }
+
+            Text(speechRecognizer.transcript)
+
         }
         .padding()
     }
